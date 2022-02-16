@@ -37,8 +37,8 @@ def register(request):
                         if checkbox != None:
                             typeuser = userType(user=user, type='1')
                             typeuser.save()
-                            new_usr = name.replace(" ", "_")
-                            inst=instructor(user=user,name=name,email=email,slug=new_usr)
+                            
+                            inst=instructor(user=user,name=name,email=email)
                             inst.save()
                             token=str(uuid.uuid4())
                             frgpwd=frgt_pwd(user=user,frg_token=token)
@@ -47,8 +47,8 @@ def register(request):
                         else:
                             typeuser = userType(user=user, type='2')
                             typeuser.save() 
-                            new_usr = user.replace(" ", "_")
-                            stud=student(user=user,name=name,email=email,slug=new_usr)
+                            
+                            stud=student(user=user,name=name,email=email)
                             stud.save()
                             token=str(uuid.uuid4())
                             frgpwd=frgt_pwd(user=user,frg_token=token)

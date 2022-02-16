@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 
 from user_profile.models import*
-
+from user_profile.models import slug_generator
 
 class who_this_crs_for(models.Model):
     crs=models.CharField(max_length=1000)
@@ -30,6 +30,11 @@ class course_detail(models.Model):
     who_this_course=models.ManyToManyField(who_this_crs_for,blank=True)
     course_quiz=models.CharField(max_length=100,blank=True)
     YT_video_url=models.URLField(blank=True)
+    def save(self, *args, **kwargs):
+        if self.slug == '':
+            self.slug = slug_generator(course_detail,self.course_title)
+        super(course_detail, self).save(*args, **kwargs)
+  
     def __str__(self):
         return   (self.course_title)
 

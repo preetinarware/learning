@@ -4,7 +4,7 @@ from django.db import models
 
 
 
-
+from user_profile.models import slug_generator
 class event_detail(models.Model):
     
     event_img=models.ImageField(upload_to='image/event/')
@@ -22,7 +22,11 @@ class event_detail(models.Model):
     event_end_time=models.TimeField()
     about_event=models.TextField()
     where_event=models.TextField()
-
+    def save(self, *args, **kwargs):
+        if self.slug == '':
+            self.slug = slug_generator(event_detail,self.event_title)
+        super(event_detail, self).save(*args, **kwargs)
+  
 
     def __str__(self):
         return self.event_title

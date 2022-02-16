@@ -5,6 +5,7 @@ from django.db import models
 from course.models import *
 from django.contrib.auth.models import User
 
+from user_profile.models import slug_generator
 # Create your models here.
 class product_detail(models.Model):
     product_img=models.ImageField(upload_to='image/shop/')
@@ -18,7 +19,11 @@ class product_detail(models.Model):
     product_sku=models.IntegerField()
     category=models.CharField(max_length=100)
     created_date=models.DateField(auto_now_add=True)
-    
+    def save(self, *args, **kwargs):
+        if self.slug == '':
+            self.slug = slug_generator(product_detail,self.product_title)
+        super(product_detail, self).save(*args, **kwargs)
+  
     def __str__(self):
         return self.product_title
 
@@ -42,6 +47,7 @@ class cart(models.Model):
     prod_name=models.CharField(max_length=100)
     quntity=models.IntegerField()
     coupon=models.IntegerField(default=0)
+
 
 
 class product_order(models.Model):
